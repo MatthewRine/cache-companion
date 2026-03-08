@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Cache Companion",
+  "version": "1.0.0",
+  "description": "Track geocaching challenge progress — Jasmer, Fizzy, and more.",
+
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+
+  "host_permissions": [
+    "https://www.geocaching.com/*"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.geocaching.com/geocache/GC*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.geocaching.com/play/map*"],
+      "js": ["map.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+
+  "action": {
+    "default_title": "Cache Companion",
+    "default_popup": "popup.html"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "cache-companion@extension",
+      "strict_min_version": "109.0"
+    }
+  }
+}
