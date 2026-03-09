@@ -5,34 +5,135 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cache Companion — Options</title>
   <style>
+    :root {
+      --bg:              #f5f5f5;
+      --bg-card:         #ffffff;
+      --bg-input:        #ffffff;
+      --bg-log:          #f9f9f9;
+      --text:            #222222;
+      --text-muted:      #555555;
+      --text-dim:        #888888;
+      --border:          #dddddd;
+      --border-light:    #eeeeee;
+      --border-section:  #f0f0f0;
+      --green:           #1a5f1a;
+      --green-dark:      #145014;
+      --green-needs:     #22aa22;
+      --btn-bg:          #1a5f1a;
+      --btn-bg-hover:    #145014;
+      --toggle-on:       #1a5f1a;
+      --toggle-off:      #cccccc;
+      --toggle-knob:     #ffffff;
+
+      /* stat cards */
+      --card-bg:         #f9f9f9;
+      --card-border:     #e0e0e0;
+      --card-hi-bg:      #e8f5e9;
+      --card-hi-border:  #a5d6a7;
+      --stat-val-plain:  #444444;
+
+      /* grid */
+      --th-bg:           #f0f0f0;
+      --th-color:        #555555;
+      --th-row-bg:       #e8f0e8;
+      --td-row-bg:       #f5f9f5;
+      --td-has-bg:       #e8f5e9;
+      --td-has-color:    #1b5e20;
+      --td-sentinel-col: #558b2f;
+      --td-none-bg:      #ffffff;
+      --td-none-color:   #aaaaaa;
+      --td-none-hover-bg:#e8e8e8;
+      --td-none-hover-c: #333333;
+      --td-na-bg:        #f0f0f0;
+      --td-na-color:     #bbbbbb;
+      --td-future-bg:    #fafafa;
+      --td-future-color: #eeeeee;
+
+      /* stale warning */
+      --warn-bg:         #fff8e1;
+      --warn-border:     #ffe082;
+      --warn-color:      #5d4037;
+      --warn-strong:     #e65100;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:              #141414;
+        --bg-card:         #1e1e1e;
+        --bg-input:        #2a2a2a;
+        --bg-log:          #252525;
+        --text:            #e8e8e8;
+        --text-muted:      #aaaaaa;
+        --text-dim:        #777777;
+        --border:          #333333;
+        --border-light:    #2a2a2a;
+        --border-section:  #2a2a2a;
+        --green:           #4caf50;
+        --green-dark:      #388e3c;
+        --green-needs:     #66bb6a;
+        --btn-bg:          #1a5f1a;
+        --btn-bg-hover:    #145014;
+        --toggle-on:       #1a5f1a;
+        --toggle-off:      #444444;
+        --toggle-knob:     #cccccc;
+
+        --card-bg:         #252525;
+        --card-border:     #333333;
+        --card-hi-bg:      #1a2e1a;
+        --card-hi-border:  #2d5a2d;
+        --stat-val-plain:  #cccccc;
+
+        --th-bg:           #252525;
+        --th-color:        #aaaaaa;
+        --th-row-bg:       #1a2e1a;
+        --td-row-bg:       #1e261e;
+        --td-has-bg:       #1a2e1a;
+        --td-has-color:    #4caf50;
+        --td-sentinel-col: #81c784;
+        --td-none-bg:      #1e1e1e;
+        --td-none-color:   #555555;
+        --td-none-hover-bg:#2a2a2a;
+        --td-none-hover-c: #aaaaaa;
+        --td-na-bg:        #191919;
+        --td-na-color:     #444444;
+        --td-future-bg:    #191919;
+        --td-future-color: #252525;
+
+        --warn-bg:         #2a1f00;
+        --warn-border:     #7a5c00;
+        --warn-color:      #ffcc80;
+        --warn-strong:     #ffab40;
+      }
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: system-ui, -apple-system, sans-serif;
-      background: #f5f5f5;
-      color: #222;
+      background: var(--bg);
+      color: var(--text);
       padding: 2rem;
       max-width: 900px;
     }
 
-    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; color: #1a5f1a; }
-    p.subtitle { color: #555; margin-bottom: 2rem; font-size: 0.95rem; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.25rem; color: var(--green); }
+    p.subtitle { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
 
     .card {
-      background: #fff;
-      border: 1px solid #ddd;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 8px;
       padding: 1.5rem;
       margin-bottom: 1.5rem;
     }
 
     .card h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
-    .card p  { font-size: 0.9rem; color: #555; margin-bottom: 1rem; line-height: 1.5; }
+    .card p  { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5; }
     .card ol {
-      font-size: 0.9rem; color: #555; line-height: 1.8;
+      font-size: 0.9rem; color: var(--text-muted); line-height: 1.8;
       padding-left: 1.25rem; margin-bottom: 1rem;
     }
-    .card ol a { color: #1a5f1a; }
+    .card ol a { color: var(--green); }
 
     /* ── Toggles ────────────────────────────────────────────────────────── */
     .toggle-row {
@@ -40,19 +141,19 @@
       align-items: center;
       justify-content: space-between;
       padding: 0.6rem 0;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid var(--border-section);
     }
     .toggle-row:last-child { border-bottom: none; }
 
     .toggle-info strong { font-size: 0.95rem; display: block; }
-    .toggle-info span   { font-size: 0.82rem; color: #888; }
+    .toggle-info span   { font-size: 0.82rem; color: var(--text-dim); }
 
     /* Toggle switch */
     .toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
     .toggle-switch input { opacity: 0; width: 0; height: 0; }
     .toggle-slider {
       position: absolute; inset: 0;
-      background: #ccc; border-radius: 24px; cursor: pointer;
+      background: var(--toggle-off); border-radius: 24px; cursor: pointer;
       transition: background 0.2s;
     }
     .toggle-slider::before {
@@ -60,61 +161,61 @@
       position: absolute;
       width: 18px; height: 18px;
       left: 3px; top: 3px;
-      background: #fff; border-radius: 50%;
+      background: var(--toggle-knob); border-radius: 50%;
       transition: transform 0.2s;
     }
-    input:checked + .toggle-slider { background: #1a5f1a; }
+    input:checked + .toggle-slider { background: var(--toggle-on); }
     input:checked + .toggle-slider::before { transform: translateX(20px); }
 
     /* ── Import ─────────────────────────────────────────────────────────── */
     .input-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-    input[type="file"] { font-size: 0.9rem; flex: 1; }
+    input[type="file"] { font-size: 0.9rem; flex: 1; color: var(--text); }
 
     button {
       display: inline-flex; align-items: center;
-      background: #1a5f1a; color: #fff; border: none;
+      background: var(--btn-bg); color: #fff; border: none;
       border-radius: 6px; padding: 0.6rem 1.2rem;
       font-size: 0.95rem; cursor: pointer; white-space: nowrap;
     }
-    button:hover:not(:disabled) { background: #145014; }
-    button:disabled { background: #888; cursor: not-allowed; }
+    button:hover:not(:disabled) { background: var(--btn-bg-hover); }
+    button:disabled { background: var(--text-dim); cursor: not-allowed; }
 
-    .tip { margin-top: 0.75rem; font-size: 0.8rem; color: #888; font-style: italic; }
+    .tip { margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-dim); font-style: italic; }
 
     #log {
-      margin-top: 1rem; font-size: 0.85rem; line-height: 1.6; color: #333;
-      background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 6px;
+      margin-top: 1rem; font-size: 0.85rem; line-height: 1.6; color: var(--text);
+      background: var(--bg-log); border: 1px solid var(--border); border-radius: 6px;
       padding: 0.75rem 1rem; white-space: pre-wrap; display: none;
     }
 
     /* ── Stale warning ──────────────────────────────────────────────────── */
     #stale-warning {
       display: none;
-      background: #fff8e1; border: 1px solid #ffe082;
+      background: var(--warn-bg); border: 1px solid var(--warn-border);
       border-radius: 8px; padding: 0.9rem 1.2rem;
-      margin-bottom: 1.5rem; font-size: 0.9rem; color: #5d4037;
+      margin-bottom: 1.5rem; font-size: 0.9rem; color: var(--warn-color);
     }
-    #stale-warning strong { color: #e65100; }
+    #stale-warning strong { color: var(--warn-strong); }
 
     /* ── Challenge sections ─────────────────────────────────────────────── */
     .challenge-section { display: none; }
     .challenge-section h2 { font-size: 1.1rem; margin-bottom: 0.25rem; }
-    #last-updated { font-size: 0.8rem; color: #888; margin-bottom: 1.25rem; }
+    #last-updated { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 1.25rem; }
 
     /* ── Dashboard cards ────────────────────────────────────────────────── */
-    .dashboard-total { font-size: 0.9rem; color: #555; margin-bottom: 1rem; }
+    .dashboard-total { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem; }
 
     .stat-cards { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
 
     .stat-card {
       flex: 1; min-width: 100px;
-      background: #f9f9f9; border: 1px solid #e0e0e0;
+      background: var(--card-bg); border: 1px solid var(--card-border);
       border-radius: 8px; padding: 1rem; text-align: center;
     }
-    .stat-card-highlight { background: #e8f5e9; border-color: #a5d6a7; }
-    .stat-value { font-size: 2rem; font-weight: 700; color: #1a5f1a; line-height: 1; margin-bottom: 0.35rem; }
-    .stat-card:not(.stat-card-highlight) .stat-value { color: #444; }
-    .stat-label { font-size: 0.78rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat-card-highlight { background: var(--card-hi-bg); border-color: var(--card-hi-border); }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 0.35rem; }
+    .stat-card:not(.stat-card-highlight) .stat-value { color: var(--stat-val-plain); }
+    .stat-label { font-size: 0.78rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
 
     /* ── Grid tables ────────────────────────────────────────────────────── */
     .grid-table {
@@ -122,27 +223,27 @@
       font-size: 0.85rem; table-layout: fixed;
     }
     .grid-table th {
-      background: #f0f0f0; color: #555; font-weight: 600;
-      padding: 0.4rem 0.3rem; text-align: center; border: 1px solid #ddd;
+      background: var(--th-bg); color: var(--th-color); font-weight: 600;
+      padding: 0.4rem 0.3rem; text-align: center; border: 1px solid var(--border);
     }
     .grid-table th.row-header {
-      background: #e8f0e8; color: #1a5f1a; font-weight: 700;
+      background: var(--th-row-bg); color: var(--green); font-weight: 700;
       text-align: left; padding-left: 0.5rem; width: 3.5rem;
     }
     .grid-table td {
       padding: 0.4rem 0.3rem; text-align: center;
-      border: 1px solid #eee; font-variant-numeric: tabular-nums;
+      border: 1px solid var(--border-light); font-variant-numeric: tabular-nums;
     }
     .grid-table td.row-label {
-      background: #f5f9f5; color: #1a5f1a; font-weight: 600;
-      text-align: left; padding-left: 0.5rem; border-color: #ddd;
+      background: var(--td-row-bg); color: var(--green); font-weight: 600;
+      text-align: left; padding-left: 0.5rem; border-color: var(--border);
     }
-    .grid-table td.has-finds { background: #e8f5e9; color: #1b5e20; font-weight: 600; }
-    .grid-table td.sentinel  { background: #e8f5e9; color: #558b2f; font-style: italic; }
-    .grid-table td.no-finds  { background: #fff; color: #aaa; cursor: pointer; }
-    .grid-table td.no-finds:hover { background: #e8e8e8; color: #333; }
-    .grid-table td.na     { background: #f0f0f0; color: #bbb; font-size: 0.75rem; }
-    .grid-table td.future { background: #fafafa; color: #eee; }
+    .grid-table td.has-finds { background: var(--td-has-bg); color: var(--td-has-color); font-weight: 600; }
+    .grid-table td.sentinel  { background: var(--td-has-bg); color: var(--td-sentinel-col); font-style: italic; }
+    .grid-table td.no-finds  { background: var(--td-none-bg); color: var(--td-none-color); cursor: pointer; }
+    .grid-table td.no-finds:hover { background: var(--td-none-hover-bg); color: var(--td-none-hover-c); }
+    .grid-table td.na     { background: var(--td-na-bg); color: var(--td-na-color); font-size: 0.75rem; }
+    .grid-table td.future { background: var(--td-future-bg); color: var(--td-future-color); }
   </style>
 </head>
 <body>

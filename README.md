@@ -101,6 +101,10 @@ Upload `cache-companion.xpi` as an asset on the [GitHub Releases](../../releases
 
 ## Changelog
 
+### v2.1.0
+- Dark mode support for the popup and options page (respects system/browser theme)
+- Buttons and toggles intentionally keep the dark forest green in dark mode
+
 ### v2.0.0
 - Renamed from **Jasmer Helper** to **Cache Companion**
 - Added **Fizzy challenge** tracking (9×9 D/T grid)
