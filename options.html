@@ -26,200 +26,168 @@
       margin-bottom: 1.5rem;
     }
 
-    .card h2 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .card h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
     .card p  { font-size: 0.9rem; color: #555; margin-bottom: 1rem; line-height: 1.5; }
-
     .card ol {
-      font-size: 0.9rem;
-      color: #555;
-      line-height: 1.8;
-      padding-left: 1.25rem;
-      margin-bottom: 1rem;
+      font-size: 0.9rem; color: #555; line-height: 1.8;
+      padding-left: 1.25rem; margin-bottom: 1rem;
     }
-
     .card ol a { color: #1a5f1a; }
 
-    .input-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    /* ── Toggles ────────────────────────────────────────────────────────── */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .toggle-row:last-child { border-bottom: none; }
 
+    .toggle-info strong { font-size: 0.95rem; display: block; }
+    .toggle-info span   { font-size: 0.82rem; color: #888; }
+
+    /* Toggle switch */
+    .toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background: #ccc; border-radius: 24px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      background: #fff; border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    input:checked + .toggle-slider { background: #1a5f1a; }
+    input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+    /* ── Import ─────────────────────────────────────────────────────────── */
+    .input-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
     input[type="file"] { font-size: 0.9rem; flex: 1; }
 
     button {
-      display: inline-flex;
-      align-items: center;
-      background: #1a5f1a;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      padding: 0.6rem 1.2rem;
-      font-size: 0.95rem;
-      cursor: pointer;
-      white-space: nowrap;
+      display: inline-flex; align-items: center;
+      background: #1a5f1a; color: #fff; border: none;
+      border-radius: 6px; padding: 0.6rem 1.2rem;
+      font-size: 0.95rem; cursor: pointer; white-space: nowrap;
     }
-
     button:hover:not(:disabled) { background: #145014; }
     button:disabled { background: #888; cursor: not-allowed; }
 
     .tip { margin-top: 0.75rem; font-size: 0.8rem; color: #888; font-style: italic; }
 
     #log {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      line-height: 1.6;
-      color: #333;
-      background: #f9f9f9;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      padding: 0.75rem 1rem;
-      white-space: pre-wrap;
-      display: none;
+      margin-top: 1rem; font-size: 0.85rem; line-height: 1.6; color: #333;
+      background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 6px;
+      padding: 0.75rem 1rem; white-space: pre-wrap; display: none;
     }
 
     /* ── Stale warning ──────────────────────────────────────────────────── */
     #stale-warning {
       display: none;
-      background: #fff8e1;
-      border: 1px solid #ffe082;
-      border-radius: 8px;
-      padding: 0.9rem 1.2rem;
-      margin-bottom: 1.5rem;
-      font-size: 0.9rem;
-      color: #5d4037;
+      background: #fff8e1; border: 1px solid #ffe082;
+      border-radius: 8px; padding: 0.9rem 1.2rem;
+      margin-bottom: 1.5rem; font-size: 0.9rem; color: #5d4037;
     }
-
     #stale-warning strong { color: #e65100; }
 
-    /* ── Stats section ──────────────────────────────────────────────────── */
-    #stats-section { display: none; }
-    #stats-section h2 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+    /* ── Challenge sections ─────────────────────────────────────────────── */
+    .challenge-section { display: none; }
+    .challenge-section h2 { font-size: 1.1rem; margin-bottom: 0.25rem; }
     #last-updated { font-size: 0.8rem; color: #888; margin-bottom: 1.25rem; }
 
-    /* ── Dashboard ──────────────────────────────────────────────────────── */
-    .dashboard-total {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 1rem;
-    }
+    /* ── Dashboard cards ────────────────────────────────────────────────── */
+    .dashboard-total { font-size: 0.9rem; color: #555; margin-bottom: 1rem; }
 
-    .stat-cards {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
+    .stat-cards { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
 
     .stat-card {
-      flex: 1;
-      min-width: 100px;
-      background: #f9f9f9;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 1rem;
-      text-align: center;
+      flex: 1; min-width: 100px;
+      background: #f9f9f9; border: 1px solid #e0e0e0;
+      border-radius: 8px; padding: 1rem; text-align: center;
     }
-
-    .stat-card-highlight {
-      background: #e8f5e9;
-      border-color: #a5d6a7;
-    }
-
-    .stat-value {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #1a5f1a;
-      line-height: 1;
-      margin-bottom: 0.35rem;
-    }
-
+    .stat-card-highlight { background: #e8f5e9; border-color: #a5d6a7; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: #1a5f1a; line-height: 1; margin-bottom: 0.35rem; }
     .stat-card:not(.stat-card-highlight) .stat-value { color: #444; }
+    .stat-label { font-size: 0.78rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; }
 
-    .stat-label {
-      font-size: 0.78rem;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    /* ── Grid tables ────────────────────────────────────────────────────── */
+    .grid-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.85rem; table-layout: fixed;
     }
-
-    /* ── Jasmer grid table ──────────────────────────────────────────────── */
-    .jasmer-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-      table-layout: fixed;
+    .grid-table th {
+      background: #f0f0f0; color: #555; font-weight: 600;
+      padding: 0.4rem 0.3rem; text-align: center; border: 1px solid #ddd;
     }
-
-    .jasmer-table th {
-      background: #f0f0f0;
-      color: #555;
-      font-weight: 600;
-      padding: 0.4rem 0.3rem;
-      text-align: center;
-      border: 1px solid #ddd;
+    .grid-table th.row-header {
+      background: #e8f0e8; color: #1a5f1a; font-weight: 700;
+      text-align: left; padding-left: 0.5rem; width: 3.5rem;
     }
-
-    .jasmer-table th.year-header {
-      background: #e8f0e8;
-      color: #1a5f1a;
-      font-weight: 700;
-      text-align: left;
-      padding-left: 0.5rem;
-      width: 3.5rem;
+    .grid-table td {
+      padding: 0.4rem 0.3rem; text-align: center;
+      border: 1px solid #eee; font-variant-numeric: tabular-nums;
     }
-
-    .jasmer-table td {
-      padding: 0.4rem 0.3rem;
-      text-align: center;
-      border: 1px solid #eee;
-      font-variant-numeric: tabular-nums;
+    .grid-table td.row-label {
+      background: #f5f9f5; color: #1a5f1a; font-weight: 600;
+      text-align: left; padding-left: 0.5rem; border-color: #ddd;
     }
-
-    .jasmer-table td.year-label {
-      background: #f5f9f5;
-      color: #1a5f1a;
-      font-weight: 600;
-      text-align: left;
-      padding-left: 0.5rem;
-      border-color: #ddd;
-    }
-
-    .jasmer-table td.has-finds {
-      background: #e8f5e9;
-      color: #1b5e20;
-      font-weight: 600;
-    }
-
-    /* Sentinel: auto-detected, count unknown */
-    .jasmer-table td.sentinel {
-      background: #e8f5e9;
-      color: #558b2f;
-      font-style: italic;
-    }
-
-    .jasmer-table td.no-finds { background: #fff; color: #aaa; }
-    .jasmer-table td.no-finds:hover { background: #e8e8e8; color: #333; }
-
-    .jasmer-table td.na {
-      background: #f0f0f0;
-      color: #bbb;
-      font-size: 0.75rem;
-    }
-
-    .jasmer-table td.future { background: #fafafa; color: #eee; }
+    .grid-table td.has-finds { background: #e8f5e9; color: #1b5e20; font-weight: 600; }
+    .grid-table td.sentinel  { background: #e8f5e9; color: #558b2f; font-style: italic; }
+    .grid-table td.no-finds  { background: #fff; color: #aaa; cursor: pointer; }
+    .grid-table td.no-finds:hover { background: #e8e8e8; color: #333; }
+    .grid-table td.na     { background: #f0f0f0; color: #bbb; font-size: 0.75rem; }
+    .grid-table td.future { background: #fafafa; color: #eee; }
   </style>
 </head>
 <body>
 
   <h1>🧭 Cache Companion</h1>
-  <p class="subtitle">Track your Jasmer month progress from your geocaching.com finds.</p>
+  <p class="subtitle">Track your geocaching challenge progress.</p>
 
-  <!-- ── Stale GPX warning ───────────────────────────────────────────────── -->
+  <!-- ── Challenge toggles ───────────────────────────────────────────────── -->
+  <div class="card">
+    <h2>Challenges</h2>
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <strong>Jasmer</strong>
+        <span>Find a cache hidden in every month since May 2000</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggle-jasmer" checked />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <strong>Fizzy</strong>
+        <span>Find a cache for every Difficulty / Terrain combination</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggle-fizzy" checked />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── Stale warning ───────────────────────────────────────────────────── -->
   <div id="stale-warning">
     ⚠️ Your GPX may be out of date — <strong><span id="stale-count">0</span> month(s)</strong>
     were auto-detected since your last import. Re-import to get accurate counts.
   </div>
 
-  <!-- ── GPX Import card ─────────────────────────────────────────────────── -->
+  <!-- ── GPX Import ──────────────────────────────────────────────────────── -->
   <div class="card">
     <h2>Import My Finds GPX</h2>
+    <div id="import-meta" style="display:none;margin-bottom:1rem;font-size:0.85rem;color:#555;line-height:1.7;">
+      <span id="last-updated"></span><br>
+      <span id="total-finds"></span>
+    </div>
     <ol>
       <li>Go to <a href="https://www.geocaching.com/pocket/" target="_blank">geocaching.com → Pocket Queries</a></li>
       <li>Under <strong>"My Finds"</strong> click <strong>"Add to Queue"</strong></li>
@@ -228,24 +196,26 @@
       <li>Unzip it — you'll find a <strong>.gpx</strong> file inside</li>
       <li>Load that .gpx file here:</li>
     </ol>
-
     <div class="input-row">
       <input type="file" id="gpx-file" accept=".gpx" />
       <button id="import-btn">Import</button>
     </div>
-
     <p class="tip">The file is parsed entirely in your browser — nothing is uploaded anywhere.</p>
-
     <div id="log"></div>
   </div>
 
-  <!-- ── Stats card ──────────────────────────────────────────────────────── -->
-  <div class="card" id="stats-section">
+  <!-- ── Jasmer section ──────────────────────────────────────────────────── -->
+  <div class="card challenge-section" id="jasmer-section">
     <h2>Jasmer Progress</h2>
-    <p id="last-updated"></p>
-
     <div id="jasmer-dashboard"></div>
-    <div id="stats-body"></div>
+    <div id="jasmer-grid"></div>
+  </div>
+
+  <!-- ── Fizzy section ───────────────────────────────────────────────────── -->
+  <div class="card challenge-section" id="fizzy-section">
+    <h2>Fizzy Progress</h2>
+    <div id="fizzy-dashboard"></div>
+    <div id="fizzy-grid"></div>
   </div>
 
   <script src="options.js"></script>

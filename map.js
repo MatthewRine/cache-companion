@@ -2,74 +2,114 @@
  * map.js — Cache Companion
  *
  * Runs on geocaching.com/play/map.
- * Watches for the cache preview panel to appear/change, finds the
- * "Placed on" date via [data-testid="placed-on-value"], and injects
- * a Jasmer label after it.
+ * Watches for the cache preview panel and injects a Cache Companion row
+ * below the "Placed on" date showing Jasmer and Fizzy status together.
  */
 
 (async () => {
 
   const DATE_RE = /\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/;
-  const LABEL_ID = 'jasmer-map-label';
+  const ROW_ID  = 'cc-map-row';
 
-  // ── Load storage once; re-read on each panel change ──────────────────────
-
-  async function loadJasmerData() {
-    const result = await browser.storage.local.get('jasmerData');
-    return result.jasmerData || {};
+  async function loadData() {
+    return browser.storage.local.get([
+      'jasmerData', 'fizzyData', 'enableJasmer', 'enableFizzy'
+    ]);
   }
 
-  // ── Build the label span ──────────────────────────────────────────────────
+  // ── Inject a row below "Placed on" with Jasmer · Fizzy ───────────────────
 
-  function buildLabel(monthKey, jasmerData) {
-    const span = document.createElement('span');
-    span.id = LABEL_ID;
-    span.style.cssText = 'margin-left:0.4em;font-size:inherit;font-weight:normal;';
-
-    if (monthKey in jasmerData) {
-      const count = jasmerData[monthKey];
-      span.textContent = `— Jasmer: done (${count})`;
-      span.style.color = '#888';
-    } else {
-      span.textContent = '— Jasmer: needed';
-      span.style.color = '#22aa22';
-    }
-
-    return span;
-  }
-
-  // ── Inject label next to the placed-on date ───────────────────────────────
-
-  async function injectLabel() {
-    // Remove any previous label first
-    document.getElementById(LABEL_ID)?.remove();
+  async function injectLabels() {
+    document.getElementById(ROW_ID)?.remove();
 
     const dateEl = document.querySelector('[data-testid="placed-on-value"]');
     if (!dateEl) return;
 
-    const match = dateEl.textContent.trim().match(DATE_RE);
-    if (!match) return;
+    const stored       = await loadData();
+    const enableJasmer = stored.enableJasmer !== false;
+    const enableFizzy  = stored.enableFizzy  !== false;
+    const jasmerData   = stored.jasmerData || {};
+    const fizzyData    = stored.fizzyData  || {};
 
-    const monthKey = `${match[3]}-${String(match[1]).padStart(2, '0')}`;
-    const jasmerData = await loadJasmerData();
-    const label = buildLabel(monthKey, jasmerData);
+    const parts = [];
 
-    dateEl.parentElement.appendChild(label);
+    // ── Jasmer ──────────────────────────────────────────────────────────────
+    if (enableJasmer) {
+      const match = dateEl.textContent.trim().match(DATE_RE);
+      if (match) {
+        const monthKey = `${match[3]}-${String(match[1]).padStart(2, '0')}`;
+        const value    = jasmerData[monthKey];
+        if (value === '1+') {
+          parts.push({ text: 'Jasmer: done (re-import GPX)', color: '#888' });
+        } else if (value) {
+          parts.push({ text: `Jasmer: done (${value})`, color: '#888' });
+        } else {
+          parts.push({ text: 'Jasmer: needed', color: '#22aa22' });
+        }
+      }
+    }
+
+    // ── Fizzy ────────────────────────────────────────────────────────────────
+    if (enableFizzy) {
+      const attrGroups = document.querySelectorAll('.attributes > div');
+      let diff = null, terr = null;
+
+      attrGroups.forEach(group => {
+        const label = group.querySelector('.attribute-label');
+        const val   = group.querySelector('.attribute-val');
+        if (!label || !val) return;
+        const labelText = label.textContent.trim().toLowerCase();
+        if (labelText === 'difficulty') diff = val.textContent.trim();
+        if (labelText === 'terrain')    terr = val.textContent.trim();
+      });
+
+      if (diff && terr) {
+        const key   = `${diff}/${terr}`;
+        const value = fizzyData[key];
+        if (value > 0) {
+          parts.push({ text: `Fizzy: done (${value})`, color: '#888' });
+        } else {
+          parts.push({ text: 'Fizzy: needed', color: '#22aa22' });
+        }
+      }
+    }
+
+    if (parts.length === 0) return;
+
+    // ── Build the row ─────────────────────────────────────────────────────────
+    // Sits below the "Placed on" line, matching its centered layout
+    const row = document.createElement('div');
+    row.id = ROW_ID;
+    row.style.cssText = 'display:flex;justify-content:center;gap:0.75em;flex-wrap:wrap;font-size:inherit;margin-top:0.25em;';
+
+    parts.forEach((part, i) => {
+      if (i > 0) {
+        const sep = document.createElement('span');
+        sep.textContent = '·';
+        sep.style.color = '#ccc';
+        row.appendChild(sep);
+      }
+      const span = document.createElement('span');
+      span.textContent = part.text;
+      span.style.color = part.color;
+      row.appendChild(span);
+    });
+
+    // Insert after the placed-on line's parent flex row
+    const placedOnRow = dateEl.closest('.geocache-placed-date') || dateEl.parentElement;
+    placedOnRow.insertAdjacentElement('afterend', row);
   }
 
-  // ── Watch for panel open / cache change via MutationObserver ─────────────
+  // ── MutationObserver ──────────────────────────────────────────────────────
 
   const observer = new MutationObserver(() => {
-    // Only act if a placed-on-value element is present and unlabelled
     const dateEl = document.querySelector('[data-testid="placed-on-value"]');
-    if (dateEl && !document.getElementById(LABEL_ID)) {
-      injectLabel();
+    if (dateEl && !document.getElementById(ROW_ID)) {
+      injectLabels();
     }
   });
 
   observer.observe(document.body, { childList: true, subtree: true });
-
-  // Also try immediately in case panel is already open
-  injectLabel();
+  injectLabels();
 
 })();

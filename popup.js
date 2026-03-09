@@ -1,36 +1,64 @@
 /**
  * popup.js — Cache Companion
- * Shows a summary of stored data and links to options / finds page.
  */
 
-const statusEl  = document.getElementById('status');
+const statusEl   = document.getElementById('status');
 const optionsBtn = document.getElementById('options-btn');
 
 async function init() {
-  const result = await browser.storage.local.get(['jasmerData', 'lastUpdated']);
-  const data   = result.jasmerData || {};
+  const stored = await browser.storage.local.get([
+    'jasmerData', 'fizzyData', 'lastUpdated',
+    'enableJasmer', 'enableFizzy'
+  ]);
 
-  if (Object.keys(data).length === 0) {
-    statusEl.textContent = 'No data yet — import a GPX file to get started.';
-    return;
-  }
+  const enableJasmer = stored.enableJasmer !== false;
+  const enableFizzy  = stored.enableFizzy  !== false;
+  const jasmerData   = stored.jasmerData || {};
+  const fizzyData    = stored.fizzyData  || {};
+  const updated      = stored.lastUpdated || null;
 
-  // Calculate completed vs possible (May 2000 → now)
   const now          = new Date();
   const currentYear  = now.getFullYear();
   const currentMonth = now.getMonth() + 1;
   const totalPossible = (currentYear - 2000) * 12 + (currentMonth - 5 + 1);
 
-  const completed = Object.values(data).filter(v => v === '1+' || v > 0).length;
-  const pct       = Math.round((completed / totalPossible) * 100);
-  const updated   = result.lastUpdated || 'unknown';
+  let html = '';
 
-  statusEl.innerHTML = `
-    <span style="font-size:1rem;font-weight:600;color:#1a5f1a">${completed} / ${totalPossible}</span>
-    <span style="color:#555"> months &nbsp; </span>
-    <span style="font-size:1rem;font-weight:600;color:#1a5f1a">${pct}%</span>
-    <br><span style="color:#aaa;font-size:0.75rem">Updated: ${updated}</span>
-  `;
+  if (!enableJasmer && !enableFizzy) {
+    statusEl.textContent = 'All challenges disabled. Enable them in settings.';
+    return;
+  }
+
+  if (Object.keys(jasmerData).length === 0 && Object.keys(fizzyData).length === 0) {
+    statusEl.textContent = 'No data yet — import a GPX file to get started.';
+    return;
+  }
+
+  if (enableJasmer) {
+    const completed = Object.values(jasmerData).filter(v => v === '1+' || v > 0).length;
+    const pct       = Math.round((completed / totalPossible) * 100);
+    html += `<div class="stat-row">
+      <span class="stat-label">Jasmer</span>
+      <span class="stat-value">${completed} / ${totalPossible}</span>
+      <span class="stat-pct">${pct}%</span>
+    </div>`;
+  }
+
+  if (enableFizzy) {
+    const completed = Object.values(fizzyData).filter(v => v > 0).length;
+    const pct       = Math.round((completed / 81) * 100);
+    html += `<div class="stat-row">
+      <span class="stat-label">Fizzy</span>
+      <span class="stat-value">${completed} / 81</span>
+      <span class="stat-pct">${pct}%</span>
+    </div>`;
+  }
+
+  if (updated) {
+    html += `<div class="updated">Updated: ${updated}</div>`;
+  }
+
+  statusEl.innerHTML = html;
 }
 
 optionsBtn.addEventListener('click', () => {
