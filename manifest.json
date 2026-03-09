@@ -1,8 +1,15 @@
 {
   "manifest_version": 3,
   "name": "Cache Companion",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Track geocaching challenge progress — Jasmer, Fizzy, and more.",
+
+  "icons": {
+    "16":  "icon.svg",
+    "32":  "icon.svg",
+    "48":  "icon.svg",
+    "128": "icon.svg"
+  },
 
   "permissions": [
     "storage",
@@ -33,6 +40,12 @@
 
   "action": {
     "default_title": "Cache Companion",
+    "default_icon": {
+      "16":  "icon.svg",
+      "32":  "icon.svg",
+      "48":  "icon.svg",
+      "128": "icon.svg"
+    },
     "default_popup": "popup.html"
   },
 

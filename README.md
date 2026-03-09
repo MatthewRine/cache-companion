@@ -101,6 +101,9 @@ Upload `cache-companion.xpi` as an asset on the [GitHub Releases](../../releases
 
 ## Changelog
 
+### v2.2.0
+- Added extension icon; no longer using system default
+
 ### v2.1.0
 - Dark mode support for the popup and options page (respects system/browser theme)
 - Buttons and toggles intentionally keep the dark forest green in dark mode
